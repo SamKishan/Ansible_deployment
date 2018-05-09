@@ -1,0 +1,19 @@
+conf t
+hostname {{item.hostname}}
+{% for ip, name in item.interfaces %}
+{% set a= loop.index -1 %}
+int interface {{ item.interfaces[a].name}}
+ip address {{ item.interfaces[a].ip}}
+no shut
+{% endfor %}
+
+{% for process_id,networks in item.ospf %}
+{%set a= loop.index -1%}
+router ospf {{item.ospf[a].process_id}}
+{% for area,ip in item.ospf[a].networks%}
+{%set b=loop.index -1%}
+network {{item.ospf[a].networks[b].ip}} area {{item.ospf[a].networks[b].area}}
+{%endfor%}
+{%endfor%}
+
+do write memory

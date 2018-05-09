@@ -1,0 +1,6 @@
+---
+- name: Generate the configuration files
+  become_user: root
+  template: src=template.j2 dest=/etc/ansible/configs/lab9/{{item.hostname}}.txt
+  become: yes
+  with_items: "{{routers}}"
